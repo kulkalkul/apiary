@@ -1,0 +1,26 @@
+[package]
+name = "apiary"
+version = "0.1.0"
+edition = "2021"
+authors = ["Bora Ülker"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+description = "API Utility for Hive Blockchain (https://hive.io/)"
+categories = ["api-bindings"]
+keywords = ["blockhain", "utility", "hive"]
+homepage = "https://github.com/yokunjon/apiary"
+repository = "https://github.com/yokunjon/apiary"
+
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0.145", features = ["derive", "rc"] }
+serde_json = "1.0.86"
+serde_with = "2.0.1"
+reqwest = { version = "0.11.12", features = ["json"] }
+chrono = { version = "0.4.22", features = ["serde"] }
+
+[dev-dependencies]
+tokio = { version = "1.21.2", default-features = false, features = ["macros"] }
+pretty_assertions = "1.3.0"
