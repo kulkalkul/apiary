@@ -4,11 +4,11 @@ use crate::methods::utils::{Account, AccountReputation};
 
 pub struct GetAccountReputations {
     pub account_lower_bound: Account,
-    pub limit: usize,
+    pub limit: u16,
 }
 
 impl GetAccountReputations {
-    pub fn new<A: Into<Account>>(account_lower_bound: A, limit: usize) -> Self {
+    pub fn new<A: Into<Account>>(account_lower_bound: A, limit: u16) -> Self {
         Self {
             account_lower_bound: account_lower_bound.into(),
             limit,
@@ -17,7 +17,7 @@ impl GetAccountReputations {
 }
 
 impl Method for GetAccountReputations {
-    type Params = (Account, usize);
+    type Params = (Account, u16);
     type Result = Vec<AccountReputation>;
     const NAME: &'static str = ns!("get_account_reputations");
 

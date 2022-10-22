@@ -60,7 +60,7 @@ mod tests {
             .await
             .unwrap();
 
-        assert_eq!(account_reputations.len(), limit);
+        assert_eq!(account_reputations.len(), limit as usize);
 
         let account_exists_response = account_reputations
             .iter()
