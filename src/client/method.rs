@@ -18,4 +18,7 @@ pub trait Method: Sized {
     }
 }
 
+// TODO: Change into struct
 pub type EmptyParams = [(); 0];
+
+// TODO: Maybe implement a Params deserializer struct
