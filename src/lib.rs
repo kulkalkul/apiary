@@ -4,6 +4,7 @@ pub mod methods;
 #[cfg(test)]
 mod tests {
     use tokio;
+    use chrono::{Utc};
     use crate::client::{HiveClient, HiveNodes};
     use pretty_assertions::{assert_eq};
 
@@ -146,5 +147,86 @@ mod tests {
             .send(GetCurrentMedianHistoryPrice)
             .await
             .unwrap();
+    }
+
+    #[tokio::test]
+    async fn get_dynamic_global_properties() {
+        use crate::methods::condenser::GetDynamicGlobalProperties;
+
+        let hive_client = client();
+
+        let _dynamic_global_properties = hive_client
+            .method()
+            .send(GetDynamicGlobalProperties)
+            .await
+            .unwrap();
+    }
+
+    // Not a good test
+    #[tokio::test]
+    async fn get_expiring_vesting_delegations() {
+        use crate::methods::condenser::GetExpiringVestingDelegations;
+
+        let hive_client = client();
+
+        let account = "themarkymark";
+        let after = Utc::now().naive_utc();
+
+        let _expiring_vesting_delegations = hive_client
+            .method()
+            .send(GetExpiringVestingDelegations::new(account, after))
+            .await
+            .unwrap();
+    }
+
+    #[tokio::test]
+    async fn get_feed_history() {
+        use crate::methods::condenser::GetFeedHistory;
+
+        let hive_client = client();
+
+        let _feed_history = hive_client
+            .method()
+            .send(GetFeedHistory)
+            .await
+            .unwrap();
+    }
+
+    #[tokio::test]
+    async fn get_follow_count() {
+        use crate::methods::condenser::GetFollowCount;
+
+        let hive_client = client();
+
+        let account = "crimsonclad";
+
+        let get_follow_count = hive_client
+            .method()
+            .send(GetFollowCount::new(account))
+            .await
+            .unwrap();
+
+        assert_eq!(get_follow_count.account.0, account);
+    }
+
+    #[tokio::test]
+    async fn get_followers() {
+        use crate::methods::condenser::GetFollowers;
+        use crate::methods::utils::FollowType;
+
+        let hive_client = client();
+
+        let account = "deathwing";
+        let start = Some("yokunjon");
+        let follow_type = FollowType::Blog;
+        let limit = 2;
+
+        let followers = hive_client
+            .method()
+            .send(GetFollowers::new(account, start, follow_type, limit))
+            .await
+            .unwrap();
+
+        assert_eq!(followers.len(), limit as usize);
     }
 }
