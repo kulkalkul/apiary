@@ -105,7 +105,9 @@ pub struct ChainProperties {
 }
 
 #[derive(Deserialize, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
-pub struct CurrentMedianHistoryPrice {
+pub struct Price {
     pub base: Asset,
     pub quote: Asset,
 }
+
+\ No newline at end of file
