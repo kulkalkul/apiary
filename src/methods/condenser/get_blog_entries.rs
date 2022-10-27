@@ -19,14 +19,14 @@ impl GetBlogEntries {
             limit,
         }
     }
-    pub fn start_max<A: Into<Account>>(account: A, start_entry_id: u64) -> Self {
-        Self::new(account, start_entry_id, Self::LIMIT_MAX)
-    }
-    pub fn latest_max<A: Into<Account>>(account: A) -> Self {
-        Self::new(account, Self::START_LATEST, Self::LIMIT_MAX)
-    }
     pub fn latest<A: Into<Account>>(account: A, limit: u16) -> Self {
         Self::new(account, Self::START_LATEST, limit)
+    }
+    pub fn latest_max<A: Into<Account>>(account: A) -> Self {
+        Self::latest(account, Self::LIMIT_MAX)
+    }
+    pub fn start_max<A: Into<Account>>(account: A, start_entry_id: u64) -> Self {
+        Self::new(account, start_entry_id, Self::LIMIT_MAX)
     }
 }
 

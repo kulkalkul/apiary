@@ -26,13 +26,13 @@ impl GetFollowers {
         }
     }
 
-    pub fn of_max<A: Into<Account>>(account: A, start: Option<A>, follow_type: FollowType) -> Self {
-        Self::new(account, start, follow_type, Self::MAX_LIMIT)
+    pub fn of_max<A: Into<Account>>(account: A, start: A, follow_type: FollowType) -> Self {
+        Self::new(account, Some(start), follow_type, Self::MAX_LIMIT)
     }
-    pub fn of_blog_max<A: Into<Account>>(account: A, start: Option<A>) -> Self {
+    pub fn of_blog_max<A: Into<Account>>(account: A, start: A) -> Self {
         Self::of_max(account, start, FollowType::Blog)
     }
-    pub fn of_ignore_max<A: Into<Account>>(account: A, start: Option<A>) -> Self {
+    pub fn of_ignore_max<A: Into<Account>>(account: A, start: A) -> Self {
         Self::of_max(account, start, FollowType::Ignore)
     }
     pub fn of_all<A: Into<Account>>(account: A, follow_type: FollowType, limit: u16) -> Self {
