@@ -23,7 +23,7 @@ impl From<&str> for Account {
     }
 }
 
-// TODO: Parse it from string
+// TODO: Parse it from string, rename to LegacyAsset
 #[derive(Serialize, Deserialize, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
 #[serde(transparent)]
 pub struct Asset(pub String);
@@ -60,6 +60,24 @@ impl ObjectId for VestingDelegationExpirationObjectId {
 pub struct FeedHistoryObjectId(u32);
 
 impl ObjectId for FeedHistoryObjectId {
+    fn new(object_id: u32) -> Self { Self(object_id) }
+    fn value(&self) -> u32 { self.0 }
+}
+
+#[derive(Serialize, Deserialize, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[serde(transparent)]
+pub struct RewardFundObjectId(u32);
+
+impl ObjectId for RewardFundObjectId {
+    fn new(object_id: u32) -> Self { Self(object_id) }
+    fn value(&self) -> u32 { self.0 }
+}
+
+#[derive(Serialize, Deserialize, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[serde(transparent)]
+pub struct VestingDelegationObjectId(u32);
+
+impl ObjectId for VestingDelegationObjectId {
     fn new(object_id: u32) -> Self { Self(object_id) }
     fn value(&self) -> u32 { self.0 }
 }
@@ -223,4 +241,94 @@ pub struct Follow {
     pub follower: Account,
     pub following: Account,
     pub what: Vec<FollowType>,
+}
+
+#[derive(Deserialize, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[serde(transparent)]
+pub struct HardforkVersion(pub String);
+
+#[derive(Deserialize, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+pub struct NextScheduledHardfork {
+    pub hf_version: HardforkVersion,
+    pub live_time: NaiveDateTime,
+}
+
+#[derive(Serialize, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum RewardFundType {
+    Post,
+}
+
+#[derive(Deserialize, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum CurveId {
+    Quadratic,
+    BoundedCuration,
+    Linear,
+    SquareRoot,
+    ConvergentLinear,
+    ConvergentSquareRoot,
+}
+
+#[serde_as]
+#[derive(Deserialize, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+pub struct RewardFund {
+    pub id: RewardFundObjectId,
+    pub name: String,
+    pub reward_balance: Asset,
+    #[serde_as(as = "PickFirst<(_, DisplayFromStr)>")]
+    pub recent_claims: u128,
+    pub last_update: NaiveDateTime,
+    #[serde_as(as = "PickFirst<(_, DisplayFromStr)>")]
+    pub content_constant: u128,
+    pub percent_curation_rewards: u16,
+    pub percent_content_rewards: u16,
+    pub author_reward_curve: CurveId,
+    pub curation_reward_curve: CurveId,
+}
+
+#[serde_as]
+#[derive(Deserialize, Clone, PartialEq, PartialOrd, Debug)]
+pub struct MarketTicker {
+    #[serde_as(as = "DisplayFromStr")]
+    pub latest: f64,
+    #[serde_as(as = "DisplayFromStr")]
+    pub lowest_ask: f64,
+    #[serde_as(as = "DisplayFromStr")]
+    pub highest_bid: f64,
+    #[serde_as(as = "DisplayFromStr")]
+    pub percent_change: f64,
+    pub hive_volume: Asset,
+    pub hbd_volume: Asset,
+}
+
+#[derive(Deserialize, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+pub struct TrendingTag {
+    pub name: String,
+    pub comments: u64,
+    pub top_posts: u64,
+    pub total_payouts: Asset,
+}
+
+#[derive(Deserialize, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+pub struct Version {
+    pub blockchain_version: HardforkVersion,
+    pub hive_revision: String,
+    pub fc_revision: String,
+    pub chain_id: String,
+}
+
+#[derive(Deserialize, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+pub struct VestingDelegation {
+    pub id: VestingDelegationObjectId,
+    pub delegator: Account,
+    pub delegatee: Account,
+    pub vesting_shares: Asset,
+    pub min_delegation_time: NaiveDateTime,
+}
+
+#[derive(Deserialize, Clone, Eq, PartialEq, Ord, PartialOrd, Hash, Debug)]
+pub struct Volume {
+    pub hive_volume: Asset,
+    pub hbd_volume: Asset,
 }
