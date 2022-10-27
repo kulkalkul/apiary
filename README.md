@@ -12,7 +12,7 @@
 
 ## API Coverage
 - <details>
-  <summary>condenser_api <b>[29/89]</b></summary>
+  <summary>condenser_api <b>[28/89]</b></summary>
 
   - [ ] broadcast_transaction
   - [ ] broadcast_transaction_synchronous
