@@ -122,6 +122,7 @@ impl<'a, M: ClientMode> HiveClientRef<'a, M> {
     }
 }
 
+// TODO: Find a way to get id from it
 impl HiveClientRef<'_, MethodMode> {
     pub async fn send<M: Method>(
         self,
