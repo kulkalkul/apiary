@@ -5,8 +5,7 @@ use crate::methods::utils::{Account, Follow, FollowType};
 pub struct GetFollowers {
     pub account: Account,
     pub start: Option<Account>,
-    // "type" is reserved in rust
-    pub r#type: FollowType,
+    pub follow_type: FollowType,
     pub limit: u16,
 }
 
@@ -22,7 +21,7 @@ impl GetFollowers {
         Self {
             account: account.into(),
             start: start.map(Into::into),
-            r#type: follow_type,
+            follow_type,
             limit,
         }
     }
@@ -61,5 +60,5 @@ impl Method for GetFollowers {
     type Result = Vec<Follow>;
     const NAME: &'static str = ns!("get_followers");
 
-    fn params(self) -> Self::Params { (self.account, self.start, self.r#type, self.limit) }
+    fn params(self) -> Self::Params { (self.account, self.start, self.follow_type, self.limit) }
 }
